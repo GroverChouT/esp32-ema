@@ -1,0 +1,39 @@
+0000   02 03 20 1b 00 17 00 04 00 1b 0c 00 [ff 55 01 01
+0010   00 08 f6 00 0e df 00 1c 18 00 00 00  31 06 1a b1]   20 bytes
+
+0000   02 03 20 17 00 13 00 04 00 1b 0c 00 [01 f3 03 37
+0010   00 1a 00 00 00 00 3c 00 00 00 00 e3]                16 bytes
+
+0000   [ff 55 01 01  00 08 f6 00 0e df 00 1c 18 00 00 00
+0010    31 06 1a b1][01 f3 03 37 00 1a 00 00 00 00 3c 00
+0020    00 00 00 e3]                                       36 bytes
+
+Protocol:
+    0000-0001   Magic Number        FF55
+    0002        Select              01 = Receive    11 = Send
+    0003        Device Type
+    0004-0006   Voltage
+    0007-0009   Current
+    000A-000C   Power
+    000D-0010   Energy
+    0011-0013   Unit Price
+    0014-0015   Frequency
+    0016-0017   Power Factor
+    0018-0019   Temperature
+    001A-001C   Unknown
+    001E        Back Light Mode     00 = Black  3C = Light  01-3B = Seconds
+    001F-0022   Unknown
+    0023        Checksum            (0002 + ... + 0022) ^ 0x44 & 0xFF
+
+UUID:
+    0000ffe0-0000-1000-8000-00805f9b34fb    Service
+    0000ffe1-0000-1000-8000-00805f9b34fb    Notify      <- Subscribe, Write
+
+Commands:
+    OP      CMD             PARAM1      PARAM2      PARAM3      COMMENT
+    0x01    Clear           00          00          00
+    0x22    Set Unit Price  & 0xFF0000  & 0x00FF00  & 0x0000FF  0x000001 (0.01) ~ 0x0F423F (9999.99)
+    0x31    Set
+    0x32    OK
+    0x33    Plus
+    0x34    Minus
